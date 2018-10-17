@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="container test3"
+>
+  <div
+    className=" row test2"
+  >
+    <div
+      className="col-3 col-md-5 test1"
+    >
+      Hello
+    </div>
+  </div>
+  <div
+    className=" row "
+  >
+    <div
+      className="col "
+    >
+      Hello
+    </div>
+  </div>
+</div>
+`;
