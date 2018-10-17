@@ -1,12 +1,43 @@
-import PropTypes from 'prop-types';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.focusableElements = exports.defaultToggleEvents = exports.canUseDOM = exports.PopperPlacements = exports.keyCodes = exports.TransitionStatuses = exports.TransitionPropTypeKeys = exports.TransitionTimeouts = exports.targetPropType = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.getScrollbarWidth = getScrollbarWidth;
+exports.setScrollbarWidth = setScrollbarWidth;
+exports.isBodyOverflowing = isBodyOverflowing;
+exports.getOriginalBodyPadding = getOriginalBodyPadding;
+exports.conditionallyUpdateScrollbar = conditionallyUpdateScrollbar;
+exports.setGlobalCssModule = setGlobalCssModule;
+exports.mapToCssModules = mapToCssModules;
+exports.omit = omit;
+exports.pick = pick;
+exports.warnOnce = warnOnce;
+exports.deprecated = deprecated;
+exports.DOMElement = DOMElement;
+exports.isReactRefObj = isReactRefObj;
+exports.findDOMElements = findDOMElements;
+exports.isArrayOrNodeList = isArrayOrNodeList;
+exports.getTarget = getTarget;
+exports.addMultipleEventListeners = addMultipleEventListeners;
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function isFunction(functionToCheck) {
   return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
- }
+}
 
 // https://github.com/twbs/bootstrap/blob/v4.0.0-alpha.4/js/src/modal.js#L436-L443
-export function getScrollbarWidth() {
-  let scrollDiv = document.createElement('div');
+function getScrollbarWidth() {
+  var scrollDiv = document.createElement('div');
   // .modal-scrollbar-measure styles // https://github.com/twbs/bootstrap/blob/v4.0.0-alpha.4/scss/_modal.scss#L106-L113
   scrollDiv.style.position = 'absolute';
   scrollDiv.style.top = '-9999px';
@@ -14,60 +45,58 @@ export function getScrollbarWidth() {
   scrollDiv.style.height = '50px';
   scrollDiv.style.overflow = 'scroll';
   document.body.appendChild(scrollDiv);
-  const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+  var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
   document.body.removeChild(scrollDiv);
   return scrollbarWidth;
 }
 
-export function setScrollbarWidth(padding) {
-  document.body.style.paddingRight = padding > 0 ? `${padding}px` : null;
+function setScrollbarWidth(padding) {
+  document.body.style.paddingRight = padding > 0 ? padding + 'px' : null;
 }
 
-export function isBodyOverflowing() {
+function isBodyOverflowing() {
   return document.body.clientWidth < window.innerWidth;
 }
 
-export function getOriginalBodyPadding() {
-  const style = window.getComputedStyle(document.body, null);
+function getOriginalBodyPadding() {
+  var style = window.getComputedStyle(document.body, null);
 
-  return parseInt((style && style.getPropertyValue('padding-right')) || 0, 10);
+  return parseInt(style && style.getPropertyValue('padding-right') || 0, 10);
 }
 
-export function conditionallyUpdateScrollbar() {
-  const scrollbarWidth = getScrollbarWidth();
+function conditionallyUpdateScrollbar() {
+  var scrollbarWidth = getScrollbarWidth();
   // https://github.com/twbs/bootstrap/blob/v4.0.0-alpha.6/js/src/modal.js#L433
-  const fixedContent = document.querySelectorAll(
-    '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top'
-  )[0];
-  const bodyPadding = fixedContent
-    ? parseInt(fixedContent.style.paddingRight || 0, 10)
-    : 0;
+  var fixedContent = document.querySelectorAll('.fixed-top, .fixed-bottom, .is-fixed, .sticky-top')[0];
+  var bodyPadding = fixedContent ? parseInt(fixedContent.style.paddingRight || 0, 10) : 0;
 
   if (isBodyOverflowing()) {
     setScrollbarWidth(bodyPadding + scrollbarWidth);
   }
 }
 
-let globalCssModule;
+var globalCssModule = void 0;
 
-export function setGlobalCssModule(cssModule) {
+function setGlobalCssModule(cssModule) {
   globalCssModule = cssModule;
 }
 
-export function mapToCssModules(className = '', cssModule = globalCssModule) {
+function mapToCssModules() {
+  var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var cssModule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : globalCssModule;
+
   if (!cssModule) return className;
-  return className
-    .split(' ')
-    .map(c => cssModule[c] || c)
-    .join(' ');
+  return className.split(' ').map(function (c) {
+    return cssModule[c] || c;
+  }).join(' ');
 }
 
 /**
  * Returns a new object with the key/value pairs from `obj` that are not in the array `omitKeys`.
  */
-export function omit(obj, omitKeys) {
-  const result = {};
-  Object.keys(obj).forEach((key) => {
+function omit(obj, omitKeys) {
+  var result = {};
+  Object.keys(obj).forEach(function (key) {
     if (omitKeys.indexOf(key) === -1) {
       result[key] = obj[key];
     }
@@ -78,11 +107,11 @@ export function omit(obj, omitKeys) {
 /**
  * Returns a filtered copy of an object with only the specified keys.
  */
-export function pick(obj, keys) {
-  const pickKeys = Array.isArray(keys) ? keys : [keys];
-  let length = pickKeys.length;
-  let key;
-  const result = {};
+function pick(obj, keys) {
+  var pickKeys = Array.isArray(keys) ? keys : [keys];
+  var length = pickKeys.length;
+  var key = void 0;
+  var result = {};
 
   while (length > 0) {
     length -= 1;
@@ -92,9 +121,9 @@ export function pick(obj, keys) {
   return result;
 }
 
-let warned = {};
+var warned = {};
 
-export function warnOnce(message) {
+function warnOnce(message) {
   if (!warned[message]) {
     /* istanbul ignore else */
     if (typeof console !== 'undefined') {
@@ -104,115 +133,71 @@ export function warnOnce(message) {
   }
 }
 
-export function deprecated(propType, explanation) {
-  return function validate(props, propName, componentName, ...rest) {
+function deprecated(propType, explanation) {
+  return function validate(props, propName, componentName) {
     if (props[propName] !== null && typeof props[propName] !== 'undefined') {
-      warnOnce(
-        `"${propName}" property of "${componentName}" has been deprecated.\n${explanation}`
-      );
+      warnOnce('"' + propName + '" property of "' + componentName + '" has been deprecated.\n' + explanation);
     }
 
-    return propType(props, propName, componentName, ...rest);
+    for (var _len = arguments.length, rest = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+      rest[_key - 3] = arguments[_key];
+    }
+
+    return propType.apply(undefined, [props, propName, componentName].concat(rest));
   };
 }
 
-export function DOMElement(props, propName, componentName) {
+function DOMElement(props, propName, componentName) {
   if (!(props[propName] instanceof Element)) {
-    return new Error(
-      'Invalid prop `' +
-        propName +
-        '` supplied to `' +
-        componentName +
-        '`. Expected prop to be an instance of Element. Validation failed.'
-    );
+    return new Error('Invalid prop `' + propName + '` supplied to `' + componentName + '`. Expected prop to be an instance of Element. Validation failed.');
   }
 }
 
-export const targetPropType = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.func,
-  DOMElement,
-  PropTypes.shape({ current: PropTypes.any })
-]);
-
+var targetPropType = exports.targetPropType = _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.func, DOMElement, _propTypes2.default.shape({ current: _propTypes2.default.any })]);
 
 /* eslint key-spacing: ["error", { afterColon: true, align: "value" }] */
 // These are all setup to match what is in the bootstrap _variables.scss
 // https://github.com/twbs/bootstrap/blob/v4-dev/scss/_variables.scss
-export const TransitionTimeouts = {
-  Fade:     150, // $transition-fade
+var TransitionTimeouts = exports.TransitionTimeouts = {
+  Fade: 150, // $transition-fade
   Collapse: 350, // $transition-collapse
-  Modal:    300, // $modal-transition
+  Modal: 300, // $modal-transition
   Carousel: 600 // $carousel-transition
 };
 
 // Duplicated Transition.propType keys to ensure that Reactstrap builds
 // for distribution properly exclude these keys for nested child HTML attributes
 // since `react-transition-group` removes propTypes in production builds.
-export const TransitionPropTypeKeys = [
-  'in',
-  'mountOnEnter',
-  'unmountOnExit',
-  'appear',
-  'enter',
-  'exit',
-  'timeout',
-  'onEnter',
-  'onEntering',
-  'onEntered',
-  'onExit',
-  'onExiting',
-  'onExited'
-];
+var TransitionPropTypeKeys = exports.TransitionPropTypeKeys = ['in', 'mountOnEnter', 'unmountOnExit', 'appear', 'enter', 'exit', 'timeout', 'onEnter', 'onEntering', 'onEntered', 'onExit', 'onExiting', 'onExited'];
 
-export const TransitionStatuses = {
+var TransitionStatuses = exports.TransitionStatuses = {
   ENTERING: 'entering',
-  ENTERED:  'entered',
-  EXITING:  'exiting',
-  EXITED:   'exited'
+  ENTERED: 'entered',
+  EXITING: 'exiting',
+  EXITED: 'exited'
 };
 
-export const keyCodes = {
-  esc:   27,
+var keyCodes = exports.keyCodes = {
+  esc: 27,
   space: 32,
   enter: 13,
-  tab:   9,
-  up:    38,
-  down:  40
+  tab: 9,
+  up: 38,
+  down: 40
 };
 
-export const PopperPlacements = [
-  'auto-start',
-  'auto',
-  'auto-end',
-  'top-start',
-  'top',
-  'top-end',
-  'right-start',
-  'right',
-  'right-end',
-  'bottom-end',
-  'bottom',
-  'bottom-start',
-  'left-end',
-  'left',
-  'left-start'
-];
+var PopperPlacements = exports.PopperPlacements = ['auto-start', 'auto', 'auto-end', 'top-start', 'top', 'top-end', 'right-start', 'right', 'right-end', 'bottom-end', 'bottom', 'bottom-start', 'left-end', 'left', 'left-start'];
 
-export const canUseDOM = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
+var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-export function isReactRefObj(target) {
-  if (target && typeof target === 'object') {
+function isReactRefObj(target) {
+  if (target && (typeof target === 'undefined' ? 'undefined' : _typeof(target)) === 'object') {
     return 'current' in target;
   }
   return false;
 }
 
-export function findDOMElements(target) {
+function findDOMElements(target) {
   if (isReactRefObj(target)) {
     return target.current;
   }
@@ -220,85 +205,61 @@ export function findDOMElements(target) {
     return target();
   }
   if (typeof target === 'string' && canUseDOM) {
-    let selection = document.querySelectorAll(target);
+    var selection = document.querySelectorAll(target);
     if (!selection.length) {
-      selection = document.querySelectorAll(`#${target}`);
+      selection = document.querySelectorAll('#' + target);
     }
     if (!selection.length) {
-      throw new Error(
-        `The target '${target}' could not be identified in the dom, tip: check spelling`
-      );
+      throw new Error('The target \'' + target + '\' could not be identified in the dom, tip: check spelling');
     }
     return selection;
   }
   return target;
 }
 
-export function isArrayOrNodeList(els) {
+function isArrayOrNodeList(els) {
   if (els === null) {
     return false;
   }
-  return Array.isArray(els) || (canUseDOM && typeof els.length === 'number');
+  return Array.isArray(els) || canUseDOM && typeof els.length === 'number';
 }
 
-
-export function getTarget(target) {
-  const els = findDOMElements(target);
+function getTarget(target) {
+  var els = findDOMElements(target);
   if (isArrayOrNodeList(els)) {
     return els[0];
   }
   return els;
 }
 
-export const defaultToggleEvents = ['touchstart', 'click'];
+var defaultToggleEvents = exports.defaultToggleEvents = ['touchstart', 'click'];
 
-export function addMultipleEventListeners(_els, handler, _events) {
-  let els = _els;
+function addMultipleEventListeners(_els, handler, _events) {
+  var els = _els;
   if (!isArrayOrNodeList(els)) {
     els = [els];
   }
 
-  let events = _events;
+  var events = _events;
   if (typeof events === 'string') {
     events = events.split(/\s+/);
   }
 
-  if (
-    !isArrayOrNodeList(els) ||
-    typeof handler !== 'function' ||
-    !Array.isArray(events)
-  ) {
-    throw new Error(`
-      The first argument of this function must be DOM node or an array on DOM nodes or NodeList.
-      The second must be a function.
-      The third is a string or an array of strings that represents DOM events
-    `);
+  if (!isArrayOrNodeList(els) || typeof handler !== 'function' || !Array.isArray(events)) {
+    throw new Error('\n      The first argument of this function must be DOM node or an array on DOM nodes or NodeList.\n      The second must be a function.\n      The third is a string or an array of strings that represents DOM events\n    ');
   }
-  Array.prototype.forEach.call(events, (event) => {
-    els.forEach((el) => {
+  Array.prototype.forEach.call(events, function (event) {
+    els.forEach(function (el) {
       el.addEventListener(event, handler);
     });
   });
   return function removeEvents() {
-    Array.prototype.forEach.call(events, (event) => {
-      els.forEach((el) => {
+    Array.prototype.forEach.call(events, function (event) {
+      els.forEach(function (el) {
         el.removeEventListener(event, handler);
       });
     });
   };
 }
 
-export const focusableElements = [
-  'a[href]',
-  'area[href]',
-  'input:not([disabled]):not([type=hidden])',
-  'select:not([disabled])',
-  'textarea:not([disabled])',
-  'button:not([disabled])',
-  'object',
-  'embed',
-  '[tabindex]:not(.modal)',
-  'audio[controls]',
-  'video[controls]',
-  '[contenteditable]:not([contenteditable="false"])',
-];
+var focusableElements = exports.focusableElements = ['a[href]', 'area[href]', 'input:not([disabled]):not([type=hidden])', 'select:not([disabled])', 'textarea:not([disabled])', 'button:not([disabled])', 'object', 'embed', '[tabindex]:not(.modal)', 'audio[controls]', 'video[controls]', '[contenteditable]:not([contenteditable="false"])'];
