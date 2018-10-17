@@ -1,6 +1,7 @@
 # react-strap-grid
 Bootstrap grid system for React
 
+```javascript
 import React from 'react';
 import Container from 'react-strap-grid/container';
 import Row from 'react-strap-grid/row';
@@ -49,3 +50,4 @@ export default class Example extends React.Component {
     );
   }
 }
+```
