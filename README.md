@@ -1,10 +1,12 @@
 # react-strap-grid
 Bootstrap grid system for React
 
-install
+## install
 ```npm
 npm i react-strap-grid --save
 ```
+
+## Example
 
 ```javascript
 import React from 'react';
