@@ -4,8 +4,12 @@ Bootstrap grid system for React
 ## install
 ```npm
 npm i react-strap-grid --save
+npm install bootstrap --save
 ```
-
+Import "bootstrap-grid.min.css" in the src/index.js file:
+```javascript
+import 'bootstrap/dist/css/bootstrap-grid.min.css'
+```
 ## Example
 
 ```javascript
