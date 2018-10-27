@@ -23,7 +23,7 @@ import Col from 'react-strap-grid/col';
 export default class Example extends React.Component {
   render() {
     return (
-      <Container>
+      <Container fluid={true}>
         <Row>
           <Col>.col</Col>
         </Row>
